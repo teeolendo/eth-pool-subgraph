@@ -1,0 +1,38 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: EthPool
+    network: rinkeby
+    source:
+      address: "0xBAA7bf15D9EC2c6A82b8D1A110774015eC437Fa0"
+      abi: EthPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - DepositReceived
+        - FundsWithdrawn
+        - OwnershipTransferred
+        - RewardsReceived
+        - UniqueMaxUpdated
+        - WeekAdvanced
+      abis:
+        - name: EthPool
+          file: ./abis/EthPool.json
+      eventHandlers:
+        - event: DepositReceived(indexed address,uint256,uint256)
+          handler: handleDepositReceived
+        - event: FundsWithdrawn(indexed address,uint256,uint256)
+          handler: handleFundsWithdrawn
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RewardsReceived(indexed address,uint256)
+          handler: handleRewardsReceived
+        - event: UniqueMaxUpdated(uint16)
+          handler: handleUniqueMaxUpdated
+        - event: WeekAdvanced(uint256)
+          handler: handleWeekAdvanced
+      file: ./src/mapping.ts
